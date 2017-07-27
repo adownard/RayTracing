@@ -22,7 +22,7 @@ vals = [1:nv];
 %%%%%%%% Euler's Method Implementation %%%%%%%%%
 
 t0 = 0; 
-tf = 100:10:250;
+tf = 100:10:200;
 nt = nv; 
 slope = 1:numel(tf);
 d_t = 1:numel(tf);
@@ -67,8 +67,6 @@ for itf=1:numel(tf)
             zPos(ix+1) = 0; 
         end
     end
-
-
     %%%%%%%%%%% Analytical Solution %%%%%%%%%%%%%%
     for it=1:nt               % fill tVec with times
         tVec(it) = t0 + (it-1) * dt;
@@ -96,20 +94,21 @@ for itf=1:numel(tf)
     
 end
 subplot(3,1,1)
-scatter(d_t,slope)
-title('Error Values for Different Time Steps')
+plot(d_t,slope,'LineWidth',1.25)
+title('Error Values for Different Time Steps','fontsize',16)
 xlabel('Time Step (dt)')
 ylabel('Error')
 subplot(3,1,2)
-scatter(d_t,error)
-title('Expected Error for First Order Scheme')
+plot(d_t,error,'LineWidth',1.25)
+title('Expected Error for First Order Scheme','fontsize',16)
 xlabel('Time Step (dt)')
-ylabel('g0*dt^2*0.5')
+h1=ylabel('Error (g_{0}dt^{2}/2)');
 subplot(3,1,3)
-scatter(log(d_t),log(slope))
-title('Natural Log of Error')
+plot(log(d_t),log(slope),'LineWidth',1.25)
+title('Natural Log of Error','fontsize',16)
 xlabel('Natural Log of dt')
 ylabel('Natural Log of Error')
 hold off
+set([h1], 'interpreter', 'tex')
 
 
