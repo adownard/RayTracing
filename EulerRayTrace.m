@@ -142,54 +142,8 @@ for ia=1:na
     diffX(ia).difference = allPosVec(ia).x_Pos - allPltVec(ia).x_Plt; 
     diffZ(ia).difference = allPosVec(ia).z_Pos - allPltVec(ia).z_Plt; 
     magDiff(ia).magDif = sqrt((diffX(ia).difference).^2 + (diffZ(ia).difference).^2);
-
     end
 figure 
 plot(magDiff(1).magDif)
 title('Magnitude of the Difference Between Rays')
-
-
-
-
-
-
-%%%%%%%%%%% Euler's Variation Changing Depth of Rays for Final Plot %%%%%%%
-%  for ix=1:nx-1
-%         xPos(ix+1) = xPos(ix) + xDir(ix)*dt;
-%         xDir(ix+1) = xDir(ix) + gVx*dt; 
-%     end
-%     for ix=1:nx-1
-%         zPos(ix+1) = zPos(ix) + zDir(ix)*dt;
-%         zDir(ix+1) = zDir(ix) + gVz*dt; 
-%        
-%         if zPos(ix+1) < 0
-%             zPos(ix+1) = 0; 
-%         end
-%         if zPos(ix+1) > 50
-%             zPos(ix+1:nx) = 50;
-%             break
-%         end
-%        
-%     end
-%%%%%%%%%%% Analytic Variation Changing depth of Rays %%%%%%%%%%%%
-% for it=1:nt
-%         t = tVec(it);
-%         xPos = xPos0 + xDir0*t + gVx * t*t * 0.5;
-%         xPlt(it) = xPos; 
-%     end
-%     for it=1:nt
-%         t = tVec(it); 
-%         zPos = zPos0 + zDir0*t + gVz * t*t * 0.5; 
-%         if zPos < 0
-%             zPos = 0;
-%         end
-%         if zPos > 50
-%             zPlt(it:nt) = 50;
-%             break
-%         else
-%             zPlt(it) = zPos;
-%         end
-%     end
-
-
 
