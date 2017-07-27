@@ -15,13 +15,7 @@ sf_2 = 1/vf^2;
 
 gradSlo2 = (sf_2 - s0_2) / nv;
 
-% slo2 = [1:nv];
-% 
-% for is=1:nv
-%     slo2(is) = s0_2 + is*gradSlo2; 
-% end
-% 
-% slo = sqrt(slo2); 
+
 
 nx = nv; 
 nz = nv;
@@ -34,7 +28,7 @@ allPltVec = struct('x_Plt',vals,'z_Plt',vals);
 %%%%%%%% Euler's Method Implementation %%%%%%%%%
 
 t0 = 0; 
-tf = 200;
+tf = 270;
 nt = nv; 
 dt = (tf-t0)/nt;
 
@@ -82,18 +76,17 @@ for a=1:na+1
     allPosVec(a).x_Pos = xPos; 
     allPosVec(a).z_Pos = zPos; 
 
-    plot(xPos,zPos)
+   plot(xPos,zPos)
 
 end
 title('Euler''s Method Ray Tracing','fontsize',16)
 ylabel('Depth of Ray')
 xlabel('Horizontal Distance Traveled')
-%axis([0,120,0,50])
 axis ij
 hold off
 
 %%%%%%%%%%% Analytical Solution %%%%%%%%%%%%%%
- figure 
+figure;
 
 for it=1:nt               % fill tVec with times
     tVec(it) = t0 + (it-1) * dt;
@@ -101,7 +94,6 @@ end
 
 xPlt = [1:nx];
 zPlt = [1:nz];
-
 hold on 
 for a=1:na+1
     alpha = a0 + (a-1)*da;
@@ -110,30 +102,27 @@ for a=1:na+1
 
     for it=1:nt
         t = tVec(it);
-        xPos = xPos0 + xDir0*t + gVx * t*t * 0.5;
-        zPos = zPos0 + zDir0*t + gVz * t*t * 0.5;
+        xPos_ = xPos0 + xDir0*t + gVx * t*t * 0.5;
+        zPos_ = zPos0 + zDir0*t + gVz * t*t * 0.5;
 
-        if zPos < 0
-            zPos = 0;
+        if zPos_ < 0
+            zPos_ = 0;
         end
 
-        xPlt(it) = xPos; 
-        zPlt(it) = zPos; 
+        xPlt(it) = xPos_; 
+        zPlt(it) = zPos_; 
     end
 
     allPltVec(a).x_Plt = xPlt; 
     allPltVec(a).z_Plt = zPlt; 
-
     plot(xPlt,zPlt)
 end
 
-    title('Analytical Solution','fontsize',16)
-    ylabel('Depth of Ray')
-    xlabel('Horizontal Distance Traveled')
-    %axis([0,120,0,50])
-    axis ij
-    %colorbar(1/slo)
-    hold off
+title('Analytical Solution','fontsize',16)
+ylabel('Depth of Ray')
+xlabel('Horizontal Distance Traveled')
+axis ij
+hold off
 
 diffX = struct('difference',[1:nv]); 
 diffZ = struct('difference',[1:nv]); 
@@ -143,7 +132,8 @@ for ia=1:na
     diffZ(ia).difference = allPosVec(ia).z_Pos - allPltVec(ia).z_Plt; 
     magDiff(ia).magDif = sqrt((diffX(ia).difference).^2 + (diffZ(ia).difference).^2);
     end
-figure 
+figure ;
 plot(magDiff(1).magDif)
 title('Magnitude of the Difference Between Rays')
+
 
