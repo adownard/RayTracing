@@ -150,7 +150,7 @@ end
 title('Analytical Solution','fontsize',18)
 ylabel('Depth of Ray','fontsize',14)
 xlabel('Horizontal Distance Traveled','fontsize',14)
-axis([1,230,0,maxz-1])
+axis([.25,230,0,maxz-1])
 b=surf(t_slo,'EdgeColor','none');
 hold on 
 z=get(b,'Zdata');
@@ -170,7 +170,7 @@ end
 title('Euler''s Method Numerical Solution','fontsize',18)
 ylabel('Depth of Ray','fontsize',14)
 xlabel('Horizontal Distance Traveled','fontsize',14)
-axis([1,230,0,maxz-1])
+axis([.25,230,0,maxz-1])
 b=surf(t_slo,'EdgeColor','none');
 z=get(b,'Zdata');
 set(b,'Zdata',z-10);

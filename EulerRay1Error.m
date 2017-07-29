@@ -17,46 +17,51 @@ gradSlo2 = (sf_2 - s0_2) / nv;
 
 nx = nv; 
 nz = nv;
-vals = [1:nv];
+
             
 %%%%%%%% Euler's Method Implementation %%%%%%%%%
 
 t0 = 0; 
-tf = 100:10:200;
-nt = nv; 
-slope = 1:numel(tf);
-d_t = 1:numel(tf);
-error = 1:numel(tf); 
+tf = 200;
+%nt = nv; 
+
 xPos0 = 0; 
 zPos0 = 0; 
-
-xPos = vals;
-zPos = vals;
-xDir = vals;
-zDir = vals;
-tVec = vals;
-
-xPos(1) = xPos0;
-zPos(1) = zPos0;
-
 alpha=30; 
-
 gVx = 0;
 gVz = gradSlo2; 
 xDir0 = sind(alpha); 
 zDir0 = cosd(alpha); 
-xDir(1) = xDir0; 
-zDir(1) = zDir0; 
+
 
 %%%%%%% Analytical Solution Parameters
+dtVec=1:10; 
 
-xPlt = [1:nx];
-zPlt = [1:nz];
 
-for itf=1:numel(tf)
-    dt = (tf(itf) - t0)/nt;
-    d_t(itf) = dt; 
-    for ix=1:nx-1
+
+for itf=1:10
+    dt=(0.5)^itf;
+    nt = (tf - t0)/dt;
+    vals=1:nt;
+    xPos = vals;
+    zPos = vals;
+    xPlt = vals;
+    zPlt = vals;
+    xDir = vals;
+    zDir = vals;
+    tVec = vals;
+    slope = vals;
+    d_t = vals;
+    error = vals; 
+    
+    d_t(itf) = dt;
+    
+    xDir(1) = xDir0; 
+    zDir(1) = zDir0; 
+    xPos(1) = xPos0;
+    zPos(1) = zPos0;
+    
+    for ix=1:nt-1
         xPos(ix+1) = xPos(ix) + xDir(ix)*dt;
         xDir(ix+1) = xDir(ix) + gVx*dt; 
 
@@ -83,7 +88,7 @@ for itf=1:numel(tf)
         xPlt(it) = xPos_; 
         zPlt(it) = zPos_; 
     end
-    diffX = xPos-xPlt; 
+    diffX = xPos(4)-xPlt(4); 
     diffZ = zPos-zPlt; 
     magDiff = sqrt(diffX.^2 + diffZ.^2);
     maxmD = max(magDiff);
@@ -93,6 +98,7 @@ for itf=1:numel(tf)
     error(itf) = -gradSlo2 * dt*dt * 0.5; 
     
 end
+
 subplot(3,1,1)
 plot(d_t,slope,'LineWidth',1.25)
 title('Error Values for Different Time Steps','fontsize',16)
@@ -110,5 +116,7 @@ xlabel('Natural Log of dt')
 ylabel('Natural Log of Error')
 hold off
 set([h1], 'interpreter', 'tex')
+
+
 
 

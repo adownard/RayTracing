@@ -7,14 +7,12 @@ close all
 
 v0 = 0.5;
 vf = 5;
-dv = .005; 
+dv = .01; 
 nv = floor((vf - v0)/dv);
 
 s0_2 = 1/v0^2;
 sf_2 = 1/vf^2;
-
 gradSlo2 = (sf_2 - s0_2) / nv;
-
 nx = nv; 
 nz = nv;
 vals = [1:nv];
@@ -67,22 +65,20 @@ end
 
 gsx=vals; 
 dsx=(xsloVec(end)-xsloVec(1))/nv; 
- 
 for a=1:na+1
     alpha = a0 + (a-1)*da;
     xDir0 = sind(alpha); 
     zDir0 = cosd(alpha); 
     xDir(1) = xDir0; 
     zDir(1) = zDir0; 
-
-    for ix=2:nv-1
-        if ix == 0
-            gsx(ix) = (xsloVec(ix+1) - xsloVec(ix))/dsx;
-        elseif ix == nv
-            gsx(ix) = (xsloVec(ix) - xsloVec(ix-1))/dsx;
+    
+    for ix=1:nv-1
+        if ix == 1
+            gsx(ix) = (xsloVec(ix+1) - xsloVec(ix))/dsx; 
         else
             gsx(ix) = (xsloVec(ix+1) - xsloVec(ix-1))/(2*dsx);
         end
+        gsx(nv)=gsx(nv-1); 
         xPos(ix+1) = xPos(ix) + xDir(ix)*dt;
         xDir(ix+1) = xDir(ix) + gsx(ix)*dt; 
     end
@@ -90,12 +86,8 @@ for a=1:na+1
         zPos(ix+1) = zPos(ix) + zDir(ix)*dt;
         zDir(ix+1) = zDir(ix) + gsz*dt; 
         if zPos(ix+1) < 0
-            zPos(ix+1) = 0; 
+            zPos(ix+1) = -1; 
         end
-%         if zPos(ix+1) > 100
-%             zPos(ix+1:nx) = 101;
-%             break
-%         end
     end
     allPosVec(a).x_Pos = xPos; 
     allPosVec(a).z_Pos = zPos; 
@@ -129,7 +121,8 @@ for ix=1:nv
     end
 end
 vel=1./slo2D;
-hold on 
+
+hold on
 for ia=1:na
     aPosx=allPosVec(ia).x_Pos * scalex; 
     aPosz=allPosVec(ia).z_Pos * scalez;
@@ -138,7 +131,9 @@ end
 title('Euler''s Method in an Anisotropic Veclocity Medium','fontsize',18)
 ylabel('Depth of Ray','fontsize',14)
 xlabel('Horizontal Distance Traveled','fontsize',14)
-axis([1,900,0,900])
+axis([1,nv,0,nv]);
+ax=gca;
+ax.Box='on';
 b=surf(slo2D,'EdgeColor','none');
 view(0,90);
 z=get(b,'Zdata');
@@ -148,3 +143,17 @@ c = colorbar;
 c.Label.String= 'Slowness';
 c.FontSize=12;
 hold off
+
+%%%%%%%%% Error %%%%%%%%%
+error=dt*dt*0.5*sqrt(gsz^2 + gsx.^2); 
+figure; 
+plot(error)
+xlabel('Number of Steps (dt)')
+ylabel('Magnitude of Error')
+title('Error for Inhomogenous Velocity Model')
+
+
+
+
+
+
